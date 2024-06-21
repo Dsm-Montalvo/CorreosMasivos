@@ -1,0 +1,8 @@
+- if (pacientes.publicado)
+  div(class="bg-white shadow rounded-lg")
+    img(class="object-cover h-72 w-full" src=`/uploads/${pacientes.imagen}` alt=`Imagen paciente ${pacientes.nombre}`)
+    div(class="p-5 space-y-3")
+      h3(class="text-2xl font-bold")=pacientes.nombre
+      p(class="text-sm text-gray-600") Campaña en la que se conoció al paciente: 
+        span(class="text-gray-800 font-bold")=pacientes.campaign.nombre
+      a(href=`/pacientes/${pacientes.id}` class="bg-green-600 w-full text-center block font-bold text-white p-2 uppercase rounded") Ver paciente

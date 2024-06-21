@@ -1,0 +1,33 @@
+extends ../layout/super
+
+block contenido
+    div.py-10 
+        h1.text-4xl.my-10.font-extrabold.text-center FSFLMX
+            span.font-normal Sin Sordera
+        h2.text-center.text-2xl.font-extrabold= pagina
+
+        div(class="bg-white shadow py-8 px-4 rounded mx-auto max-w-4xl my-10 md:px-10")
+            h3.text-2xl.font-bold.mb-5= mensaje.alias
+            br 
+            br
+            br
+            h3.text-2xl.font-bold.mb-5= mensaje.asunto
+            br
+            p(style="white-space: pre-wrap;")= mensaje.mensaje
+
+            form(action="/admin/emails/enviar" method="POST" onsubmit="return confirm('Confirme que enviará el anterior mensaje de forma masiva')") 
+                input(type="hidden" name="_csrf" value=csrfToken)
+                input(type="hidden" name="mensajeId" value=mensaje.id)
+                input(type="hidden" name="alias" value=mensaje.alias)
+                div.flex.items-center.justify-between
+                    button(type="submit" class="rounded px-10 py-2 bg-indigo-600 hover:bg-indigo-700 text-sm font-bold text-center text-white uppercase my-5 inline-block w-full md:w-auto") Enviar a Donadores
+                    a(href="/admin/mensajes" class="rounded px-8 py-2 bg-red-600 hover:bg-red-700 text-sm font-bold text-center text-white uppercase my-2 inline-block") Cancelar
+
+block scripts
+    script.
+        // JavaScript to handle form submission confirmation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            if (!confirm('Confirme que enviará el anterior mensaje de forma masiva')) {
+                e.preventDefault(); // Prevent form submission if user cancels
+            }
+        });

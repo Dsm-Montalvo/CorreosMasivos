@@ -1,0 +1,13 @@
+extends ../layout/super
+
+block styles
+    link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
+    
+    
+block contenido 
+    h1 este es el super usuario
+    //- pre=JSON.stringify(paciente, undefine, 1)
+    
+block scripts
+    script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
+    script(src="/js/mostrarMapa.js")                                                             

@@ -1,0 +1,20 @@
+header.bg-gradient-to-r.from-green-800.to-purple-700.p-2
+  .container.mx-auto.px-8.flex.justify-between.items-center
+    .flex.items-center
+      a(href="/" class="bg-cover bg-center") 
+        img(src="/img/logo/logo-mexico-sin-sordera-2023.png" alt="Logo" style="height: 8rem; width: auto;" class="mr-2")
+
+    nav(class=" text-sm md:flex md:items-center md:justify-end gap-3 font-bold text-white hidden")
+      a(href="/admin/mostrarcampaings") Campañas
+      a(href="/admin/donadores") Donadores
+      a(href="/admin/asociados") Mis Asociados
+      form(action="/auth/cerrar-sesion" method="POST") 
+        input(type="hidden" name="_csrf" value=csrfToken)
+        input(type="submit" class="bg-indigo-800 py-2 px-10 rounded-lg" value="Cerrar Sesion") 
+
+div(class="px-10 bg-gradient-to-r from-green-700 to-purple-700 py-5 md:block ")
+  div(class="container mx-auto flex justify-between")
+    a(href="/admin/campaing" class="text-sm font-bold uppercase text-white") Crear Campaña
+    a(href="/admin/donador" class="text-sm font-bold uppercase text-white") Registrar Donador
+    a(href="/admin/emails" class="text-sm font-bold uppercase text-white") Enviar Correos
+    a(href="/seguridadsocial" class="text-sm font-bold uppercase text-white") Crear Servicio requerido

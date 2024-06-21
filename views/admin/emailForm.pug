@@ -1,0 +1,112 @@
+extends ../layout/super
+
+block styles
+    link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
+    style.
+        /* Fondo de la página */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/img/logo/fondo-munecos.jpg') no-repeat center center fixed;
+            background-size: cover;
+            opacity: 0.3; /* Ajusta la opacidad de la imagen de fondo */
+            z-index: -1; /* Asegúrate de que el fondo esté detrás del contenido */
+        }
+
+        /* Estilos personalizados para los botones */
+        .custom-button {
+            margin-right: 1rem; /* Espacio entre los botones */
+            padding: 10px 20px; /* Más espacio dentro de los botones */
+            font-size: 0.875rem; /* Tamaño de fuente */
+            text-transform: uppercase; /* Texto en mayúsculas */
+            color: white; /* Color del texto */
+            font-weight: bold; /* Negrita */
+            border-radius: 0.375rem; /* Bordes redondeados */
+            transition: background-color 0.3s ease; /* Transición para el cambio de color */
+        }
+
+        .custom-button.indigo {
+            background-color: rgba(112, 111, 111, 0.8); /* Color índigo con opacidad */
+        }
+
+        .custom-button.indigo:hover {
+            background-color: rgba(75, 85, 99, 1);
+            box-shadow: 0 4px 6px rgba(5, 0, .10, 0.5); /* Color índigo más oscuro al pasar el ratón */
+        }
+
+        .custom-button.green {
+            background-color: rgba(112, 111, 111, 0.8);
+            
+        }
+
+        .custom-button.green:hover {
+            background-color: rgba(34, 197, 94, 1); /* Color verde más oscuro al pasar el ratón */
+            box-shadow: 0 4px 6px rgba(5, 0, .10, 0.5);
+        }
+
+        .custom-button.red {
+            background-color: rgba(112, 111, 111, 0.8);
+            
+        }
+
+        .custom-button.red:hover {
+            background-color: rgba(239, 68, 68, 1); /* Color rojo más oscuro al pasar el ratón */
+            box-shadow: 0 4px 6px rgba(5, 0, .10, 0.5);
+        }
+
+        .form-opacity {
+            background-color: rgba(70, 184, 169, 0.8); /* Fondo blanco con opacidad */
+            padding: 5rem; /* Espaciado interno */
+            border-radius: 0.375rem; /* Bordes redondeados */
+            box-shadow: 0 4px 6px rgba(5, 0, .10, 0.5); /* Sombra ligera */
+        }
+
+block contenido
+    div.py-10 
+        h1.text-4xl.my-10.font-extrabold.text-center  Fundacion Mexico
+            span.font-normal  Sin Sordera A.C
+        h2.text-center.text-2xl.font-extrabold= pagina
+
+        if errores || mensajes
+            div(class="max-w-md mx-auto my-10")
+                if errores
+                    each error in errores 
+                        p.bg-red-600.text-white.uppercase.text-xs.text-center.p-2.mb-1.font-bold= error.msg
+                if mensajes
+                    each mensaje in mensajes
+                        p.bg-green-600.text-white.uppercase.text-xs.text-center.p-2.mb-1.font-bold= mensaje.msg
+
+        div(class="shadow py-4 px-2 rounded mx-auto max-w-4xl my-10 md:px-10 form-opacity")
+            form.space-y-20(method="POST" action="/admin/emails")
+                input(type="hidden" name="_csrf" value = csrfToken)
+
+                div.justify-center.space-y-5
+                    div.flex
+                        a(href="/admin/donadores/ver" class="custom-button indigo") Ver lista de Correos 
+                        a(href="/admin/donadores/crear" class="custom-button green") Agregar a la lista de Correos
+                        a(href="/admin/mensajes" class="custom-button red") Mensajes Predefinidos
+
+                    div.flex.justify-center.mb-6
+                        img(src="/img/logo/logo-noyolo.png" alt="Logo" style="height: 10rem; width: auto;")
+
+                    h3.text-lg.leading-2.font-bold.text-white Modifique el correo 
+                        
+                    p.text-white Añade Informacion sobre el correo 
+                    
+                    div
+                        label.block.text-sm.uppercase.text-black.mb-2.font-bold(for="alias") Alias del remitente
+                        input#alias.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Alias del remitente" type="text" name="alias" value=datos ? datos.alias : '')
+
+                    div
+                        label.block.text-sm.uppercase.text-black.mb-2.font-bold(for="subject") Asunto del correo
+                        input#subject.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Asunto del correo" type="text" name="subject" value=datos ? datos.subject : '')
+
+                    div
+                        label.block.text-sm.uppercase.text-black.mb-2.font-bold(for="message") Mensaje del correo
+                        textarea#message.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(rows="5" placeholder="Mensaje del correo" name="message")= datos ? datos.message : ''
+
+                    input(class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 rounded text-white font-bold uppercase cursor-pointer" type="submit" value="Enviar Correos")

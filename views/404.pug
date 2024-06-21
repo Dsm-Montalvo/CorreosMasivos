@@ -1,0 +1,21 @@
+extends ./layout/app
+block styles
+    style.
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/img/logo/error-404.png') no-repeat center center fixed;
+            background-size: cover;
+            opacity: 0.3;
+            z-index: -1;
+        }
+block contenido
+    div(class="py-10")
+        h2(class="text-center text-4xl font-extrabold pt-10")=pagina
+        p(class="text-center text-lg font-extrabold pt-10") ERROR 404
+
+        

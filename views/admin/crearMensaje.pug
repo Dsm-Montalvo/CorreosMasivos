@@ -1,0 +1,32 @@
+
+extends ../layout/super
+
+block contenido
+  div.py-10 
+    h1.text-4xl.my-10.font-extrabold.text-center FSFLMX
+      span.font-normal Sin Sordera
+    h2.text-center.text-2xl.font-extrabold= pagina
+
+    if errores 
+      div(class="max-w-md mx-auto my-10")
+        each error in errores 
+          p.bg-red-600.text-white.uppercase.text-xs.text-center.p-2.mb-1.font-bold= error.msg
+
+    div(class="bg-white shadow py-8 px-4 rounded mx-auto max-w-4xl my-10 md:px-10")
+      form.space-y-8(method="POST" action="/admin/mensajes/crear")
+        input(type="hidden" name="_csrf" value=csrfToken)
+
+        div
+          label.block.text-sm.uppercase.text-gray-400.mb-2.font-bold(for="alias") Alias del remitente
+          input#alias.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Alias del remitente" type="text" name="alias" value='')
+
+        div
+          label.block.text-sm.uppercase.text-gray-400.mb-2.font-bold(for="asunto") Asunto del correo
+          input#asunto.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Asunto del correo" type="text" name="asunto" value='')
+
+        div
+          label.block.text-sm.uppercase.text-gray-400.mb-2.font-bold(for="mensaje") Mensaje del correo
+          textarea#mensaje.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(rows="5" placeholder="Mensaje del correo" name="mensaje")= ''
+
+        input(class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 rounded text-white font-bold uppercase cursor-pointer" type="submit" value="Guardar Mensaje Predefinido")
+        a(href="/admin/mensajes" class="w-full py-3 bg-red-600 hover:bg-red-700 rounded text-white font-bold uppercase cursor-pointer flex items-center justify-center md:w-auto") Regresar

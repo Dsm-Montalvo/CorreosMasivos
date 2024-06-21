@@ -1,0 +1,47 @@
+extends ../layout/super
+
+block styles 
+   meta(name="csrf-token" content=csrfToken)
+   style.
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/img/logo/fondo-cuarto.jpg') no-repeat center center fixed;
+            background-size: cover;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+block contenido
+     div.py-10 
+         h1.text-4xl.my-10.font-extrabold.text-center Fundación México
+            span.font-normal  Sin Sordera A.C 
+         h2.text-center.text-2xl.font-extrabold Registro de Usuarios Pertenecientes a la Fundación
+         
+         a(href="/usuarios/crear" class="rounded px-10 py-2 bg-indigo-600 hover:bg-indigo-700 text-sm font-bold text-center text-white uppercase my-5 inline-block w-full md:w-auto" ) Registrar Nuevo Usuario 
+        
+        
+         //- pre= JSON.stringify(usuario,undefine,2)
+         if usuario.length
+            div.bg-gray-100.py-8
+                div.max-w-7xl.mx-auto.bg-white.shadow-lg.rounded-lg.overflow-hidden
+                    ul.divide-y.divide-gray-300
+                        each usuarios in usuario
+                            li
+                                div(class="p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0 gap-4 bg-white shadow rounded-lg mb-4")
+                                    div(class="flex-grow space-y-2")
+                                        a(class="block text-2xl font-extrabold text-indigo-600 hover:underline" href=`/usuarios/${usuarios.id}`)= 'Trabajador: ' + usuarios.nombre
+                                        div
+                                          h2='Email de la Persona asociada: '+usuarios.email
+                                                         
+
+                                    div(class="flex space-x-2")
+                                        
+                                        form(method="POST" action=`/usuarios/eliminar/${usuarios.id}`)
+                                            input(type="hidden" name="_csrf" value=csrfToken)
+                                            input(type="submit" class='text-center px-4 py-2 text-xs font-semibold rounded bg-red-100 text-red-800 hover:bg-red-200 cursor-pointer' value="Eliminar")
+//- a(href=`/admin/editarAsociado/${usuarios.id}` class="text-center px-4 py-2 text-xs font-semibold rounded bg-indigo-100 text-indigo-800 hover:bg-indigo-200") Editar

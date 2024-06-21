@@ -1,0 +1,88 @@
+extends ../layout/super
+
+block styles
+    link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
+    style.
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead {
+            background-color: #f8f8f8;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+block contenido
+    div.py-20 
+        h1.text-4xl.my-10.font-extrabold.text-center  FSFLMX
+            span.font-normal  Sin Sordera
+        h2.text-center.text-2xl.font-extrabold= pagina
+
+        if errores 
+            div(class="max-w-md mx-auto my-10")
+                each error in errores 
+                    p.bg-red-600.text-white.uppercase.text-xs.text-center.p-2.mb-1.font-bold= error.msg
+        if mensajes
+            div(class="max-w-md mx-auto my-10")
+                each mensaje in mensajes
+                    p.bg-green-600.text-white.uppercase.text-xs.text-center.p-2.mb-1.font-bold= mensaje.msg
+
+        div(class="bg-white shadow py-8 px-4 rounded mx-auto max-w-4x1 my-10 md:px-10")
+
+            div.flex
+                a(href="/admin/donadores/crear" class="rounded px-10 py-2 bg-green-600 hover:bg-green-900 text-sm font-bold text-center text-white uppercase my-5 inline-block w-full md:w-auto") Agregar a la lista de Correos
+
+            if donadores.length
+                table
+                    thead
+                        tr
+                            th.text-left Nombre
+                            th.text-left Gmail
+                            th.text-left Teléfono
+                            th.text-left Teléfono de Contacto
+                            th.text-left Empresa
+                            th.text-left Monto Donado
+                            th.text-left Acciones
+                    tbody
+                        each donador in donadores
+                            tr
+                                td= donador.nombre
+                                td= donador.gmaildonador
+                                td= donador.telefono
+                                td= donador.telcontacto
+                                td= donador.empresa
+                                td= donador.montodonado
+                                td(class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex space-x-2")
+                                     a(href=`/admin/donadores/editar/${donador.id}` class="rounded px-8 py-2 bg-green-500 hover:bg-green-900 text-sm font-bold text-center text-white uppercase my-2 inline-block w-full md:w-auto") Editar
+                                     button(type="button" class="rounded px-8 py-2 bg-red-500 hover:bg-red-900 text-sm font-bold text-center text-white uppercase my-2 inline-block w-full md:w-auto" onclick=`confirmDelete(${donador.id})`) Eliminar
+            else
+                p.text-center No hay donadores registrados.
+            
+            div.flex
+               a(href="/admin/emails" class="rounded px-10 py-2 bg-indigo-600 hover:bg-teal-900 text-sm font-bold text-center text-white uppercase my-5 inline-block w-full md:w-auto") Regresar
+
+
+
+block scripts
+    script.
+        function confirmDelete(id) {
+            if (confirm("¿Estás seguro de que quieres eliminar este donador?")) {
+                window.location.href = `/admin/donadores/eliminar/${id}`;
+            }
+        }

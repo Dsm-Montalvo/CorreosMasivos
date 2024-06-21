@@ -1,0 +1,61 @@
+
+extends ../layout/admin
+
+block styles
+    link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
+    
+block contenido
+     div.py-10 
+         h1.text-4xl.my-10.font-extrabold.text-center  FSFLMX
+            span.font-normal  Sin Sordera
+         h2.text-center.text-2xl.font-extrabold= pagina
+
+         if errores 
+            div(class="max-w-md mx-auto my-10")
+                each error in errores 
+                   p.bg-red-600.text-white.uppercase.text-xs.text-center.p-2.mb-1.font-bold= error.msg
+         div(class="bg-white shadow py-8 px-4 rounded mx-auto max-w-4xl my-10 md:px-10")
+                form.space-y-8(method="POST")
+                    input(type="hidden" name="_csrf" value = csrfToken)
+                    div.space-y-5
+                        h3.text-lg.leading-6.font-medium.text-gray-900 Añade Informacion sobre el beneficiario
+    
+                        div
+                            label.block.text-sm.uppercase.text-gray-400.mb-2.fond-bold(for="enfermedad") ¿Padece alguna enfermedad?
+                            input#enfermedad.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Anote si el paciente padece alguna enfermedad" type="text" name="enfermedad" value= datos ? datos.nombre : '' )        
+                        
+                        div
+                            label.block.text-sm.uppercase.text-gray-400.mb-2.fond-bold(for="ruidosonido") ¿Siente algun Ruido o Sonido dentro de sus Oidos?
+                            input#ruidosonido.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Anote si el paciende siente algun ruido o sonido" type="text" name="ruidosonido" value= datos ? datos.ruidosonido : '' )        
+                    div(class="md:flex md:gap-4 space-y-5 md:space-y-0")
+
+                        div(class="md:w-1/2 ")
+                            label.block.text-sm.uppercase.text-gray-400.mb-2.fond-bold(for="familiarusausado") ¿Algun familiar usa o ha usado AA?
+                            input#familiarusausado.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Anote si algun familiar usa o ha usado AA" type="text" name="familiarusausado" value= datos ? datos.familiarusausado : '' )        
+                       
+                        div(class="md:w-1/2")
+                            label.block.text-sm.uppercase.text-gray-400.mb-2.fond-bold(for="ladoescucha") ¿Escucha mejor del lado?
+                            input#ladoescucha.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Anote de que lado escucha mejor " type="text" name="ladoescucha" value= datos ? datos.ladoescucha : '' )        
+                    div.space-y-5
+                        div
+                            label.block.text-sm.uppercase.text-gray-400.mb-2.fond-bold(for="exposicion") ¿Esta expuesto constantemente a ruidos altos?
+                            input#exposicion.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Anote si esta expuesto constantemente a ruidos altos" type="text" name="exposicion" value= datos ? datos.exposicion : '' )        
+                        div
+                            label.block.text-sm.uppercase.text-gray-400.mb-2.fond-bold(for="tiporuido") ¿Que tipo de ruido?
+                            input#tiporuido.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Anote el tipo de ruido" type="text" name="tiporuido" value= datos ? datos.tiporuido : '' )        
+                        
+                        div
+                            label.block.text-sm.uppercase.text-gray-400.mb-2.fond-bold(for="serviciorequeridoid") Servicio requerido 
+                            select#serviciorequeridoid.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(name="serviciorequeridoid")
+                                option(value="") -Selecione-
+                                each serviciorequerido in serviciorequeridoid 
+                                    option(value=serviciorequerido.id selected= datos ? datos.serviciorequeridoid == serviciorequerido.id ? true:false:null)= serviciorequerido.nombre  
+                        div
+                            label.block.text-sm.uppercase.text-gray-400.mb-2.fond-bold(for="diagnostico") Diagnostico medico:
+                            textarea#diagnostico.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Nombre del Beneficiario" type="" name="diagnostico" value= datos ? datos.diagnostico : '' )        
+                        
+
+                        input(class="w-full py-3 bg-indigo-600 hover:bg-indigos-700 rounded text-white font-bold uppercase cursor-pointer" type="submit" value="Guardar Beneficiario")
+
+block scripts
+     script(src="/js/calcularedad.js")                                                             

@@ -1,0 +1,117 @@
+extends ../layout/admin
+
+block styles 
+   meta(name="csrf-token" content=csrfToken)
+   style.
+         .nav-item {
+            margin-left: 2rem; /* Ajusta el valor según sea necesario */
+            margin-right: 2rem; /* Ajusta el valor según sea necesario */
+        }
+        /* Estilo para el fondo con opacidad */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/img/logo/background-mexico-sin-sordera-2024.jpg') no-repeat center center fixed;
+            background-size: cover;
+            opacity: 0.3; /* Ajusta la opacidad según sea necesario */
+            z-index: -1; /* Asegúrate de que esté detrás del contenido */
+        }
+
+        /* Header y footer transparentes */
+        header {
+            background: rgba(148, 220, 34, 0.8); /* Fondo verde semitransparente */
+        }
+        footer {
+            background: rgba(148, 220, 34, 0.8); /* Fondo verde semitransparente */
+        }
+
+block contenido
+         header(class="w-full p-4 flex justify-between items-center m-4")
+            img(src="/img/logo/logo-noyolo.png" alt="Inicio Logo" style="height: 5rem; width: auto; box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1); border-radius: 50%;")
+            nav(class="flex-1 flex justify-center")
+                  ul(class="flex text-white")
+                     li(class="nav-item") 
+                        a(href="/" class="hover:underline font-extrabold text-black") INICIO
+                     li(class="nav-item") 
+                        a(href="#" class="hover:underline font-extrabold text-black") DONACIONES
+                     li(class="nav-item") 
+                        a(href="#" class="hover:underline font-extrabold text-black") ACERCA DE NOSOTROS
+                     li(class="nav-item") 
+                        a(href="#" class="hover:underline font-extrabold text-black") CONTACTO
+            img(src="/img/logo/logo-sello.png" alt="Final Logo" style="height: 5rem; width: auto;box-shadow: 0 10px 8px rgba(0, 0, 0, 0.1); border-radius: 40%;")
+         div.py-10 
+         h2.text-center.text-2xl.font-extrabold=pagina
+         
+         a(href="/pacientes/crear" class="rounded px-10 py-2 bg-white hover:bg-white text-sm font-extrabold text-center text-black uppercase my-5 inline-block w-full md:w-auto" ) Registrar Paciente 
+        
+        
+         //- pre= JSON.stringify(paciente,undefine,2)
+         if paciente.length
+            div(class="bg-white shadow rounded-lg")
+                ul(class="divide-y divide-gray-200")
+                    each pacientes in paciente
+                         li 
+                           div(class="bg-white shadow rounded-lg p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-8 md:space-y-0 gap-4") 
+                              div(class="sm:w-1/4 md:w-1/6") 
+                                 img(src=`uploads/${pacientes.imagen}`,alt=`Imagen propiedad ${paciente.nombre}` )
+                              div(class="sm:w-2/4 md:w-2/6 lg:w-4/6 space-x-3") 
+                                
+                                 a(class="block text-2xl font-extrabold text-indigo-600" href=`/pacientes/${pacientes.id}`)= 'Paciente: ' + pacientes.nombre
+
+                                 p(class="text-sm text-black font-bold flex items-center") 
+                                    svg(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6")
+                                       path(stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z")
+                                    = 'Compañia de seguros: '+pacientes.companyseguro.nombre  
+
+                                 p(class="text-sm text-black font-bold flex items-center") 
+                                    svg(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6")
+                                       path(stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z")
+                                    ='Titular de seguridad social: '+pacientes.titularseguridadsocial.nombre
+
+                                 p(class="text-sm text-black font-bold flex items-center")
+                                    svg(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6")
+                                       path(stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75")
+                                    ='Correo: '+pacientes.correo 
+                                 p(class=" md:w-5/6 text-sm text-black font-bold flex items-center")
+                                    svg(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6")
+                                       path(stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z")
+                                    ='Telefono del paciente: '+pacientes.numpaciente
+                             
+                              div(class="sm:w-1/4 md:w-2/6 lg:w-4/6 flex flex-col lg:flex-row gap-2" ) 
+                                 button(type="button" data-pacientes-id=`${pacientes.id}` class=`cambiar-estado w-full px-5 py-5 md:py-2 text-xs leading-5 font-semibold rounded cursor-pointer ${pacientes.publicado ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`)=`${pacientes.publicado ? 'En Atencion' : 'Sin atencion'}`
+                                 a(href=`/pacientes/editar/${pacientes.id}` class="text-center w-full md:px-5 md:py-2 py-5 text-xs leading-5 font-semibold rounded cursor-pointer bg-indigo-100 text-indigo-800") Editar      
+                                 a(href=`/pacientes/completado/${pacientes.id}` class="text-center w-full md:px-5 md:py-2 py-5 text-xs leading-5 font-semibold rounded cursor-pointer bg-indigo-700 text-white") Completar datos     
+
+                                 form(method="POST" action=`/pacientes/eliminar/${pacientes.id}`)
+                                     input(type="hidden" name="_csrf" value = csrfToken)
+                                     input(type="submit" class='w-full px-5 py-5 md:py-2 text-xs leading-5 font-semibold rounded cursor-pointer bg-red-100 text-red-800' value="Eliminiar")
+           
+            div(class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200  sm:px-6")
+               div(class="flex-1 flex justify-between sm:hidden")
+                  a(href=`/mis-pacientes?pagina=${paginaActual - 1}` class=`${paginaActual === "1" ? 'pointer-events-none' : ''} relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50`) Anterior
+                  a(href=`/mis-pacientes?pagina=${paginaActual + 1}` class=`${paginaActual === paginas ? 'pointer-events-none': '' } relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50`) Siguiente
+ 
+               div(class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between")
+                  p(class="text-sm text-gray-700 gap-2") Mostrando 
+                     span(class="font-medium") #{offset +1 } a 
+                     span(class="font-medium") #{total < limit + offset ? total : limit + offset} de 
+                     span(class="font-medium") #{total} Resultados 
+              
+               div(class="hidden sm:block") 
+                 nav(class="relative z-0 inline-flex rounded-md shadow-md")
+                        - var n = 1;
+                                  while n <= paginas 
+                                       a(href=`/mis-pacientes?pagina=${n}` class=`${paginaActual == n ? 'bg-indigo-50 border-indigo-500 text-indigo-600' : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-200'} relative inline-flex items-flex items-center px-4 border text-sm font-medium`) #{n++}
+         else
+             p.text-center No hay Pacientes
+         footer(class="w-full p-4 flex justify-between items-center text-black mt-10 m-4")
+               p &copy; 2024 Fundacion Mexico Sin Sordera A.C
+               img(src="/img/logo/logo-R.jpg" alt="Logo" style="height: 8rem; width: auto; box-shadow: 0 12px 5px rgba(0, 0, 0, 0.1); border-radius: 8%;" class="footer-img")
+
+block scripts
+   script(src="/js/cambiarEstado.js")
+            
