@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { Usuario } from '../models/index.js'
+import Usuario from '../models/Usuario.js'
 
 const protegerRuta = async (req,res,next) =>{
     //  verificar si ahi un token

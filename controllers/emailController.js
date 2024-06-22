@@ -457,6 +457,19 @@ const enviarEmail = async (req, res) => {
 };
 
 
+const noEncontrado = (req, res) => {
+  res.render('404', {
+      pagina: 'No Encontrada',
+      csrfToken: req.csrfToken()
+  })
+}
+
+const superUsuario = (req, res) => {
+  res.render('admin/super', {
+    pagina: 'Pacientes Registrados',
+    csrfToken: req.csrfToken(),
+  });
+};
 
 
 export{
@@ -475,5 +488,7 @@ export{
     eliminarMensajePredefinido,
     utilizarMensajePredefinido,
     guardarCambiosMensajePredefinido,
-    enviarEmail
+    enviarEmail,
+    noEncontrado,
+    superUsuario
 }

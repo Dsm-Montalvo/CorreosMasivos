@@ -91,7 +91,7 @@ const autenticar = async (req,res)=>{
             httpOnly:true,
            
             // secure:true
-        }).redirect('/mi-sitio')
+        }).redirect('/')
     
     }
 
@@ -104,7 +104,7 @@ const autenticar = async (req,res)=>{
     return res.cookie('_token', token,{
         httpOnly:true,
         // secure:true
-    }).redirect('/mis-pacientes')
+    }).redirect('/')
 
 
 }

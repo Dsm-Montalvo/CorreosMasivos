@@ -2,12 +2,8 @@ import express from 'express';
 import csrf from 'csurf'
 import cookieParser from 'cookie-parser';
 import usuarioRoutes from './routes/usuarioRoutes.js';
-import pacientesRoutes from './routes/pacientesRoutes.js';
-import datosRoutes from './routes/datosRoutes.js'
 import superRoutes from './routes/superRoutes.js';
 
-import appRoutes from './routes/appRoutes.js';
-import apiRoutes from './routes/apiRoutes.js'
 
 import db from './config/db.js';
 
@@ -42,13 +38,9 @@ app.set('views', './views')
 app.use(express.static('public'))
 
 // Routing
-app.use('/',appRoutes)
 app.use('/auth', usuarioRoutes)
-app.use('/',pacientesRoutes)
-app.use('/',superRoutes)
-app.use('/', datosRoutes)
 
-app.use('/api', apiRoutes)
+app.use('/',superRoutes)
 
 //Definir puerto 
 const port = process.env.PORT || 10000;

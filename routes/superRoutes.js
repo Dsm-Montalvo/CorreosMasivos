@@ -1,13 +1,12 @@
 import express from 'express'
 import {body} from 'express-validator'
-import {superUsuario,crearCampaing,guardar,campaings, asociados,eliminarUsuario,editarAsociado} from '../controllers/campaingController.js'
 import protegerRuta from '../middleware/protegerRuta.js';
 import upload from '../middleware/subirImagen.js';
-import { sendEmails, crearCorreo, crearDonador, guardarDonador, mostrarDonadores, editarDonador,actualizarDonador, eliminarDonador, verMensajesPredefinidos, crearMensajePredefinido, guardarMensajePredefinido, editarMensajePredefinido, guardarCambiosMensajePredefinido, eliminarMensajePredefinido, utilizarMensajePredefinido, enviarEmail } from '../controllers/emailController.js';
+import { sendEmails, crearCorreo, crearDonador, guardarDonador, mostrarDonadores, editarDonador,actualizarDonador, eliminarDonador, verMensajesPredefinidos, crearMensajePredefinido, guardarMensajePredefinido, editarMensajePredefinido, guardarCambiosMensajePredefinido, eliminarMensajePredefinido, utilizarMensajePredefinido, enviarEmail, noEncontrado, superUsuario } from '../controllers/emailController.js';
 
 const router = express.Router();
 
-router.get('/mi-sitio',protegerRuta, superUsuario)
+router.get('/',protegerRuta, superUsuario)
 
 
 router.get('/admin/emails',protegerRuta, crearCorreo)
@@ -27,6 +26,7 @@ router.post('/admin/donadores/crear', protegerRuta,
 
 router.get('/admin/donadores/editar/:id', protegerRuta, editarDonador);
 router.post('/admin/donadores/editar/:id', protegerRuta, actualizarDonador);
+router.get('/admin/donadores/eliminar/:id', protegerRuta, eliminarDonador);
 
 router.get('/admin/mensajes', protegerRuta, verMensajesPredefinidos);
 router.get('/admin/mensajes/crear', protegerRuta, crearMensajePredefinido);
@@ -43,23 +43,7 @@ router.get('/admin/mensajes/eliminar/:id',protegerRuta, eliminarMensajePredefini
 router.get('/admin/mensajes/utilizar/:id',protegerRuta, utilizarMensajePredefinido);
 router.post('/admin/emails/enviar',protegerRuta, enviarEmail);
 
-router.get('/admin/mostrarcampaings',protegerRuta, campaings)
-
-
-router.get('/admin/campaing',protegerRuta, crearCampaing)
-router.post('/admin/campaing',protegerRuta,
-    body('nombre').notEmpty().withMessage('El Nombre de la campaña es obligatoria'),
-
-    guardar
-)
-////////Asociados///////////
-router.get('/admin/asociados',protegerRuta, asociados)
-
-router.post('/usuarios/eliminar/:id', protegerRuta, eliminarUsuario);
-
-router.get('/admin/editarAsociado/:id',protegerRuta, editarAsociado);
-
-
+router.get('/404',noEncontrado)
 
 
 export default router

@@ -18,45 +18,7 @@ block styles
         }
 
         /* Estilos personalizados para los botones */
-        .custom-button {
-            margin-right: 1rem; /* Espacio entre los botones */
-            padding: 10px 20px; /* Más espacio dentro de los botones */
-            font-size: 0.875rem; /* Tamaño de fuente */
-            text-transform: uppercase; /* Texto en mayúsculas */
-            color: white; /* Color del texto */
-            font-weight: bold; /* Negrita */
-            border-radius: 0.375rem; /* Bordes redondeados */
-            transition: background-color 0.3s ease; /* Transición para el cambio de color */
-        }
-
-        .custom-button.indigo {
-            background-color: rgba(112, 111, 111, 0.8); /* Color índigo con opacidad */
-        }
-
-        .custom-button.indigo:hover {
-            background-color: rgba(75, 85, 99, 1);
-            box-shadow: 0 4px 6px rgba(5, 0, .10, 0.5); /* Color índigo más oscuro al pasar el ratón */
-        }
-
-        .custom-button.green {
-            background-color: rgba(112, 111, 111, 0.8);
-            
-        }
-
-        .custom-button.green:hover {
-            background-color: rgba(34, 197, 94, 1); /* Color verde más oscuro al pasar el ratón */
-            box-shadow: 0 4px 6px rgba(5, 0, .10, 0.5);
-        }
-
-        .custom-button.red {
-            background-color: rgba(112, 111, 111, 0.8);
-            
-        }
-
-        .custom-button.red:hover {
-            background-color: rgba(239, 68, 68, 1); /* Color rojo más oscuro al pasar el ratón */
-            box-shadow: 0 4px 6px rgba(5, 0, .10, 0.5);
-        }
+        
 
         .form-opacity {
             background-color: rgba(70, 184, 169, 0.8); /* Fondo blanco con opacidad */
@@ -85,15 +47,12 @@ block contenido
                 input(type="hidden" name="_csrf" value = csrfToken)
 
                 div.justify-center.space-y-5
-                    div.flex
-                        a(href="/admin/donadores/ver" class="custom-button indigo") Ver lista de Correos 
-                        a(href="/admin/donadores/crear" class="custom-button green") Agregar a la lista de Correos
-                        a(href="/admin/mensajes" class="custom-button red") Mensajes Predefinidos
+                    
 
                     div.flex.justify-center.mb-6
                         img(src="/img/logo/logo-noyolo.png" alt="Logo" style="height: 10rem; width: auto;")
 
-                    h3.text-lg.leading-2.font-bold.text-white Modifique el correo 
+                    h3.text-lg.leading-2.font-bold.text-black Modifique el correo 
                         
                     p.text-white Añade Informacion sobre el correo 
                     
