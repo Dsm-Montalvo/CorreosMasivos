@@ -80,20 +80,6 @@ const autenticar = async (req,res)=>{
            })
     }
     
- // Comprobar si el usuario es el super usuario
-    if (email === "admin@admin.com") {
-        // Redirigir al super usuario a otra vista
-        const token = generarJWT({id: usuario.id, nombre : usuario.nombre})
-
-    
-        //almacenar en un cookie
-        return res.cookie('_token', token,{
-            httpOnly:true,
-           
-            // secure:true
-        }).redirect('/')
-    
-    }
 
     //Autenticar al usuario
    const token = generarJWT({id: usuario.id, nombre : usuario.nombre})

@@ -1,0 +1,35 @@
+if donadores.length
+    table
+        thead
+            tr
+                th.text-left Nombre
+                th.text-left Correo Electrónico
+                th.text-left Teléfono
+                th.text-left Teléfono de Contacto
+                th.text-left Empresa
+                th.text-left Acciones
+        tbody
+            each donador in donadores
+                tr
+                    td= donador.nombre
+                    td= donador.gmaildonador
+                    td= donador.telefono
+                    td= donador.telcontacto
+                    td= donador.empresa
+                    td(class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex space-x-2")
+                        a(href=`/admin/donadores/editar/${donador.id}` class="rounded px-8 py-2 bg-green-500 hover:bg-green-900 text-sm font-bold text-center text-white uppercase my-2 inline-block w-full md:w-auto") Editar
+                        button(type="button" class="rounded px-8 py-2 bg-red-500 hover:bg-red-900 text-sm font-bold text-center text-white uppercase my-2 inline-block w-full md:w-auto" onclick=`confirmDelete(${donador.id})`) Eliminar
+else
+    p.text-center No hay donadores registrados.
+
+if totalPages > 1
+    ul.pagination.flex.justify-center.mt-5
+        li.page-item(class=currentPage === 1 ? 'hidden' : '')
+            a.page-link(href=`#`, onclick=`changePage(${currentPage - 1})`, class="rounded px-4 py-2 bg-indigo-600 hover:bg-indigo-900 text-sm font-bold text-center text-white uppercase") Anterior
+
+        - for(let i = 1; i <= totalPages; i++)
+            li.page-item(class=i === currentPage ? 'active' : '')
+                a.page-link(href=`#`, onclick=`changePage(${i})`, class=`${i === currentPage ? 'bg-indigo-600 text-white' : 'bg-white text-indigo-600'} border border-indigo-600 hover:bg-indigo-900 hover:text-white font-bold py-2 px-4`) #{i}
+
+        li.page-item(class=currentPage === totalPages ? 'hidden' : '')
+            a.page-link(href=`#`, onclick=`changePage(${currentPage + 1})`, class="rounded px-4 py-2 bg-indigo-600 hover:bg-indigo-900 text-sm font-bold text-center text-white uppercase") Siguiente

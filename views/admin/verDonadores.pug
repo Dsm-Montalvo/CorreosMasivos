@@ -51,34 +51,9 @@ block contenido
                 div.relative.w-full.max-w-md
                     input#search(type="text" placeholder="Buscar Donador..." class="border border-black-300 rounded py-2 pl-10 pr-3 w-full text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500")
 
-            if donadores.length
-                table
-                    thead
-                        tr
-                            th.text-left Nombre
-                            th.text-left Correo Electrónico
-                            th.text-left Teléfono
-                            th.text-left Teléfono de Contacto
-                            th.text-left Empresa
-                            th.text-left Acciones
-                    tbody#donadores-table
-                        include _donadoresTable 
-            else
-                p.text-center No hay donadores registrados.
-
-            if totalPages > 1
-                ul.pagination.flex.justify-center.mt-5
-                    li.page-item(class=currentPage === 1 || totalPages === 0 ? 'hidden' : '')
-                        a.page-link(href=`/admin/donadores?page=${currentPage - 1}`) Anterior
-
-                    - for(let i = 1; i <= totalPages; i++)
-                        li.page-item(class=i === currentPage ? 'active' : '')
-                            a.page-link(href=`/admin/donadores?page=${i}`)= i
-
-                    li.page-item(class=currentPage === totalPages || totalPages === 0 ? 'hidden' : '')
-                        a.page-link(href=`/admin/donadores?page=${currentPage + 1}`) Siguiente
-
-                
+            div#donadores-table
+                include donadoresTable
+                            
             div.flex
                 a(href="/admin/donadores/pdf" class="rounded px-10 py-2 bg-indigo-600 hover:bg-indigo-900 text-sm font-bold text-center text-white uppercase my-5 inline-block w-full md:w-auto") Descargar PDF
                 a(href="/admin/donadores/excel" class="rounded px-10 py-2 bg-red-600 hover:bg-red-900 text-sm font-bold text-center text-white uppercase my-5 inline-block w-full md:w-auto") Descargar Excel
@@ -93,7 +68,7 @@ block scripts
                 window.location.href = `/admin/donadores/eliminar/${id}`;
             }
         }
-        function fetchDonadores(query = '', page = 1) {
+         function fetchDonadores(query = '', page = 1) {
             $.ajax({
                 url: '/admin/donadores',
                 method: 'GET',
@@ -118,3 +93,4 @@ block scripts
             const query = $('#search').val();
             fetchDonadores(query, page);
         }
+    script(src="https://kit.fontawesome.com/a076d05399.js")

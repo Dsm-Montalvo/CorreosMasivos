@@ -555,7 +555,7 @@ const generarExcel = async (req, res) => {
   }
 };
 
-const listarDonadores = async (req, res) => {
+/* const listarDonadores = async (req, res) => {
   const page = parseInt(req.query.page) || 1; // Página actual, default: 1
   const limit = 10; // Número de registros por página
   const offset = (page - 1) * limit; // Offset para la consulta
@@ -583,8 +583,96 @@ const listarDonadores = async (req, res) => {
           errores: [{ msg: 'Error al obtener donadores.' }],
       });
   }
-};
+}; 
 
+vista
+
+
+if donadores.length
+                table
+                    thead
+                        tr
+                            th.text-left Nombre
+                            th.text-left Correo Electrónico
+                            th.text-left Teléfono
+                            th.text-left Teléfono de Contacto
+                            th.text-left Empresa
+                            th.text-left Acciones
+                    tbody#donadores-table
+                        include _donadoresTable 
+            else
+                p.text-center No hay donadores registrados.
+
+            if totalPages > 1
+                ul.pagination.flex.justify-center.mt-5
+                    li.page-item(class=currentPage === 1 || totalPages === 0 ? 'hidden' : '')
+                        a.page-link(
+                            href=`/admin/donadores?page=${currentPage - 1}`, 
+                            class="bg-green-500 hover:bg-purple-700 text-black font-bold py-2 px-4 rounded-l transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+                        ) Anterior
+
+                    - for(let i = 1; i <= totalPages; i++)
+                        li.page-item(class=i === currentPage ? 'active' : '')
+                            a.page-link(
+                                href=`/admin/donadores?page=${i}`, 
+                                class=`${i === currentPage ? 'bg-red-600 text-white' : 'bg-white-600 text-purple-600'} border border-purple-600 hover:bg-purple-700 hover:text-white font-bold py-2 px-4 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110`
+                            )= i
+
+                    li.page-item(class=currentPage === totalPages || totalPages === 0 ? 'hidden' : '')
+                        a.page-link(
+                            href=`/admin/donadores?page=${currentPage + 1}`, 
+                            class="bg-green-500 hover:bg-purple-700 text-black font-bold py-2 px-4 rounded-r transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+                        ) Siguiente
+*/
+
+
+const listarDonadores = async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Página actual, default: 1
+  const limit = 10; // Número de registros por página
+  const offset = (page - 1) * limit; // Offset para la consulta
+  const searchQuery = req.query.search || ''; // Búsqueda por nombre
+
+  try {
+      // Consulta a la base de datos para obtener los donadores paginados
+      const { rows, count } = await Donadores.findAndCountAll({
+          where: {
+              nombre: {
+                  [Op.like]: `%${searchQuery}%`
+              }
+          },
+          offset,
+          limit,
+          order: [['createdAt','DESC']], // Ordenar según necesidad
+      });
+
+      const totalPages = Math.ceil(count / limit); // Total de páginas
+
+      if (req.xhr) { // Verifica si la solicitud es AJAX
+          res.render('admin/donadoresTable', {
+              donadores: rows,
+              csrfToken: req.csrfToken(),
+              currentPage: page,
+              totalPages,
+              layout: false // No renderizar el layout completo
+          });
+      } else {
+          res.render('admin/verDonadores', {
+              pagina: 'Listado de Donadores',
+              donadores: rows,
+              csrfToken: req.csrfToken(),
+              currentPage: page,
+              totalPages,
+          });
+      }
+  } catch (error) {
+      console.error('Error al obtener donadores:', error);
+      res.render('admin/verDonadores', {
+          pagina: 'Listado de Donadores',
+          csrfToken: req.csrfToken(),
+          errores: [{ msg: 'Error al obtener donadores.' }],
+      });
+  }
+};
 
 export{
     crearCorreo,
