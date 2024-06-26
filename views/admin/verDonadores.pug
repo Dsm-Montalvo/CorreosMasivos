@@ -27,6 +27,7 @@ block styles
             background-color: #4CAF50;
             color: white;
         }
+        
 
 block contenido
     div.py-20 
@@ -45,8 +46,10 @@ block contenido
 
         div(class="bg-white shadow py-8 px-4 rounded mx-auto max-w-4x1 my-10 md:px-10")
 
-            div.flex
+            div.flex.justify-between
                 a(href="/admin/donadores/crear" class="rounded px-10 py-2 bg-green-600 hover:bg-green-900 text-sm font-bold text-center text-white uppercase my-5 inline-block w-full md:w-auto") Agregar a la lista de Correos
+                div.relative.w-full.max-w-md
+                    input#search(type="text" placeholder="Buscar Donador..." class="border border-black-300 rounded py-2 pl-10 pr-3 w-full text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500")
 
             if donadores.length
                 table
@@ -57,31 +60,61 @@ block contenido
                             th.text-left Teléfono
                             th.text-left Teléfono de Contacto
                             th.text-left Empresa
-                            th.text-left Monto Donado
                             th.text-left Acciones
-                    tbody
-                        each donador in donadores
-                            tr
-                                td= donador.nombre
-                                td= donador.gmaildonador
-                                td= donador.telefono
-                                td= donador.telcontacto
-                                td= donador.empresa
-                                td= donador.montodonado
-                                td(class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex space-x-2")
-                                     a(href=`/admin/donadores/editar/${donador.id}` class="rounded px-8 py-2 bg-green-500 hover:bg-green-900 text-sm font-bold text-center text-white uppercase my-2 inline-block w-full md:w-auto") Editar
-                                     button(type="button" class="rounded px-8 py-2 bg-red-500 hover:bg-red-900 text-sm font-bold text-center text-white uppercase my-2 inline-block w-full md:w-auto" onclick=`confirmDelete(${donador.id})`) Eliminar
+                    tbody#donadores-table
+                        include _donadoresTable 
             else
                 p.text-center No hay donadores registrados.
-            
-            
+
+            if totalPages > 1
+                ul.pagination.flex.justify-center.mt-5
+                    li.page-item(class=currentPage === 1 || totalPages === 0 ? 'hidden' : '')
+                        a.page-link(href=`/admin/donadores?page=${currentPage - 1}`) Anterior
+
+                    - for(let i = 1; i <= totalPages; i++)
+                        li.page-item(class=i === currentPage ? 'active' : '')
+                            a.page-link(href=`/admin/donadores?page=${i}`)= i
+
+                    li.page-item(class=currentPage === totalPages || totalPages === 0 ? 'hidden' : '')
+                        a.page-link(href=`/admin/donadores?page=${currentPage + 1}`) Siguiente
+
+                
+            div.flex
+                a(href="/admin/donadores/pdf" class="rounded px-10 py-2 bg-indigo-600 hover:bg-indigo-900 text-sm font-bold text-center text-white uppercase my-5 inline-block w-full md:w-auto") Descargar PDF
+                a(href="/admin/donadores/excel" class="rounded px-10 py-2 bg-red-600 hover:bg-red-900 text-sm font-bold text-center text-white uppercase my-5 inline-block w-full md:w-auto") Descargar Excel
 
 
 
 block scripts
+    script(src="https://code.jquery.com/jquery-3.6.0.min.js")
     script.
         function confirmDelete(id) {
             if (confirm("¿Estás seguro de que quieres eliminar este donador?")) {
                 window.location.href = `/admin/donadores/eliminar/${id}`;
             }
+        }
+        function fetchDonadores(query = '', page = 1) {
+            $.ajax({
+                url: '/admin/donadores',
+                method: 'GET',
+                data: { search: query, page: page },
+                success: function(response) {
+                    $('#donadores-table').html(response);
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            $('#search').on('keyup', function() {
+                const query = $(this).val();
+                fetchDonadores(query);
+            });
+        });
+
+        function changePage(page) {
+            const query = $('#search').val();
+            fetchDonadores(query, page);
         }

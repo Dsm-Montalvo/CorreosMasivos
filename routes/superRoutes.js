@@ -2,7 +2,7 @@ import express from 'express'
 import {body} from 'express-validator'
 import protegerRuta from '../middleware/protegerRuta.js';
 import upload from '../middleware/subirImagen.js';
-import { sendEmails, crearCorreo, crearDonador, guardarDonador, mostrarDonadores, editarDonador,actualizarDonador, eliminarDonador, verMensajesPredefinidos, crearMensajePredefinido, guardarMensajePredefinido, editarMensajePredefinido, guardarCambiosMensajePredefinido, eliminarMensajePredefinido, utilizarMensajePredefinido, enviarEmail, noEncontrado, superUsuario } from '../controllers/emailController.js';
+import { sendEmails, crearCorreo, crearDonador, guardarDonador, mostrarDonadores, editarDonador,actualizarDonador, eliminarDonador, verMensajesPredefinidos, crearMensajePredefinido, guardarMensajePredefinido, editarMensajePredefinido, guardarCambiosMensajePredefinido, eliminarMensajePredefinido, utilizarMensajePredefinido, enviarEmail, noEncontrado, superUsuario, generarPDF, generarExcel, listarDonadores } from '../controllers/emailController.js';
 
 const router = express.Router();
 
@@ -12,7 +12,7 @@ router.get('/',protegerRuta, superUsuario)
 router.get('/admin/emails',protegerRuta, crearCorreo)
 router.post('/admin/emails',protegerRuta, sendEmails)
 
-router.get('/admin/donadores/ver',protegerRuta, mostrarDonadores);
+router.get('/admin/donadores/ver',protegerRuta,listarDonadores);
 router.get('/admin/donadores/crear',protegerRuta, crearDonador)
 router.post('/admin/donadores/crear', protegerRuta,
     body('nombre').notEmpty().withMessage('El Nombre es obligatorio'),
@@ -42,6 +42,10 @@ router.post('/admin/mensajes/editar/:id',protegerRuta, guardarCambiosMensajePred
 router.get('/admin/mensajes/eliminar/:id',protegerRuta, eliminarMensajePredefinido);
 router.get('/admin/mensajes/utilizar/:id',protegerRuta, utilizarMensajePredefinido);
 router.post('/admin/emails/enviar',protegerRuta, enviarEmail);
+
+router.get('/admin/donadores/pdf',protegerRuta, generarPDF);
+router.get('/admin/donadores/excel',protegerRuta ,generarExcel);
+router.get('/admin/donadores',protegerRuta ,listarDonadores);
 
 router.get('/404',noEncontrado)
 

@@ -4,6 +4,9 @@ const User = require('../models/Donadores'); */
 import nodemailer from 'nodemailer';
 import Donadores from '../models/Donadores.js';
 import { validationResult } from 'express-validator';
+import PDFDocument from 'pdfkit';
+import ExcelJS from 'exceljs';
+import { Op } from 'sequelize';
 import MensajesPredefinidos from '../models/MensajePredefinidos.js';
 
 const sendEmails = async (req, res) => {
@@ -478,6 +481,110 @@ const superUsuario = (req, res) => {
   });
 };
 
+const generarPDF = async (req, res) => {
+  try {
+      const donadores = await Donadores.findAll();
+
+      if (!donadores.length) {
+          return res.status(404).send('No hay donadores registrados.');
+      }
+
+      const doc = new PDFDocument();
+      let filename = `donadores_${Date.now()}.pdf`;
+      filename = encodeURIComponent(filename);
+      
+      res.setHeader('Content-disposition', 'attachment; filename="' + filename + '"');
+      res.setHeader('Content-type', 'application/pdf');
+
+      doc.fontSize(16).text('Lista de Donadores', { align: 'center' });
+      doc.moveDown();
+
+      donadores.forEach(donador => {
+          doc.fontSize(12).text(`Nombre: ${donador.nombre}`);
+          doc.fontSize(12).text(`Correo Electrónico: ${donador.gmaildonador}`);
+          doc.fontSize(12).text(`Teléfono: ${donador.telefono}`);
+          doc.fontSize(12).text(`Teléfono de Contacto: ${donador.telcontacto}`);
+          doc.fontSize(12).text(`Empresa: ${donador.empresa}`);
+          doc.moveDown();
+      });
+
+      doc.pipe(res);
+      doc.end();
+
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Error al generar el PDF');
+  }
+};
+
+const generarExcel = async (req, res) => {
+  try {
+      const donadores = await Donadores.findAll();
+
+      if (!donadores.length) {
+          return res.status(404).send('No hay donadores registrados.');
+      }
+
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet('Donadores');
+
+      worksheet.columns = [
+          { header: 'Nombre', key: 'nombre', width: 30 },
+          { header: 'Correo Electrónico', key: 'gmaildonador', width: 30 },
+          { header: 'Teléfono', key: 'telefono', width: 20 },
+          { header: 'Teléfono de Contacto', key: 'telcontacto', width: 20 },
+          { header: 'Empresa', key: 'empresa', width: 30 },
+      ];
+
+      donadores.forEach(donador => {
+          worksheet.addRow(donador);
+      });
+
+      let filename = `donadores_${Date.now()}.xlsx`;
+      filename = encodeURIComponent(filename);
+      
+      res.setHeader('Content-disposition', 'attachment; filename="' + filename + '"');
+      res.setHeader('Content-type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+      await workbook.xlsx.write(res);
+      res.end();
+
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Error al generar el Excel');
+  }
+};
+
+const listarDonadores = async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Página actual, default: 1
+  const limit = 10; // Número de registros por página
+  const offset = (page - 1) * limit; // Offset para la consulta
+
+  try {
+      // Consulta a la base de datos para obtener los donadores paginados
+      const donadores = await Donadores.findAndCountAll({
+          offset,
+          limit,
+          order: [['createdAt', 'DESC']], // Ordenar según necesidad
+      });
+
+      const totalPages = Math.ceil(donadores.count / limit); // Total de páginas
+
+      res.render('admin/verDonadores', {
+          pagina: 'Listado de Donadores',
+          donadores: donadores.rows,
+          currentPage: page,
+          totalPages,
+      });
+  } catch (error) {
+      console.error('Error al obtener donadores:', error);
+      res.render('admin/verDonadores', {
+          pagina: 'Listado de Donadores',
+          errores: [{ msg: 'Error al obtener donadores.' }],
+      });
+  }
+};
+
 
 export{
     crearCorreo,
@@ -497,5 +604,8 @@ export{
     guardarCambiosMensajePredefinido,
     enviarEmail,
     noEncontrado,
-    superUsuario
+    superUsuario,
+    generarPDF,
+    generarExcel,
+    listarDonadores
 }
