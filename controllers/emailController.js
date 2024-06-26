@@ -57,8 +57,8 @@ const sendEmails = async (req, res) => {
       });
     });
 
-    res.render('admin/emailForm', {
-        pagina: 'Enviar Correos Masivos',
+    res.render('admin/super', {
+        pagina: 'Inicio',
         csrfToken: req.csrfToken(),
         datos: {},
         errores: [],
@@ -66,8 +66,8 @@ const sendEmails = async (req, res) => {
       });
     } catch (error) {
       console.error('Error fetching users:', error);
-      res.status(500).render('admin/emailForm', {
-        pagina: 'Enviar Correos Masivos',
+      res.status(500).render('admin/super', {
+        pagina: 'Inicio',
         csrfToken: req.csrfToken(),
         datos: req.body,
         errores: [{ msg: 'Internal server error' }],
@@ -110,14 +110,21 @@ const guardarDonador = async (req, res) => {
 
   try {
       await Donadores.create(req.body);
-      res.redirect('/admin/emails'); // Redirige a la página de correos después de agregar el donador
+      res.render('admin/super',{
+          pagina: 'Inicio',
+          csrfToken: req.csrfToken(),
+          datos: {}, 
+          errores: [],
+          mensajes: [{ msg: 'Donador agregado con exito.' }]
+      }); // Redirige a la página de correos después de agregar el donador
   } catch (error) {
       console.error('Error al guardar el donador:', error);
-      res.render('admin/addDonorForm', {
-          pagina: 'Agregar a Lista de Correos',
+      res.render('admin/super', {
+          pagina: 'Inicio',
           csrfToken: req.csrfToken(),
           datos: req.body,
-          errores: [{ msg: 'Error al guardar el donador' }]
+          errores: [{ msg: 'Error al guardar el donador' }],
+          mensajes: []      
       });
   }
 };
@@ -437,8 +444,8 @@ const enviarEmail = async (req, res) => {
       });
     });
 
-    res.render('admin/emailForm', {
-      pagina: 'Enviar Correos Masivos',
+    res.render('admin/super', {
+      pagina: 'Inicio',
       csrfToken: req.csrfToken(),
       datos: {},
       errores: [],
@@ -446,8 +453,8 @@ const enviarEmail = async (req, res) => {
     });
     } catch (error) {
     console.error('Error fetching users:', error);
-    res.status(500).render('admin/emailForm', {
-      pagina: 'Enviar Correos Masivos',
+    res.status(500).render('admin/super', {
+      pagina: 'Inicio',
       csrfToken: req.csrfToken(),
       datos: req.body,
       errores: [{ msg: 'Internal server error' }],
@@ -466,7 +473,7 @@ const noEncontrado = (req, res) => {
 
 const superUsuario = (req, res) => {
   res.render('admin/super', {
-    pagina: 'Pacientes Registrados',
+    pagina: 'Inicio',
     csrfToken: req.csrfToken(),
   });
 };

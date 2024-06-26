@@ -16,8 +16,22 @@ block styles
             z-index: -1; 
         }
 block contenido 
-    h1(class="text-center text-3xl font-extrabold ") Sistema Privado de correos
-    //- pre=JSON.stringify(paciente, undefine, 1)
+    div.py-10 
+        h1.text-4xl.my-10.font-extrabold.text-center  Fundacion Mexico
+            span.font-normal  Sin Sordera A.C
+        h2.text-center.text-2xl.font-extrabold= pagina
+
+        if errores || mensajes
+            div(class="max-w-md mx-auto my-10")
+                if errores
+                    each error in errores 
+                        p.bg-red-600.text-white.uppercase.text-xs.text-center.p-2.mb-1.font-bold= error.msg
+                if mensajes
+                    each mensaje in mensajes
+                        p.bg-green-600.text-white.uppercase.text-xs.text-center.p-2.mb-1.font-bold= mensaje.msg
+
+        h1(class="text-center text-3xl font-extrabold ") Sistema Privado de correos
+        //- pre=JSON.stringify(paciente, undefine, 1)
     
 block scripts
     script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
