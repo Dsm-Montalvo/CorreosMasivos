@@ -593,7 +593,6 @@ export{
     sendEmails,
     crearDonador,
     guardarDonador,
-    mostrarDonadores,
     eliminarDonador,
     editarDonador,
     actualizarDonador,
