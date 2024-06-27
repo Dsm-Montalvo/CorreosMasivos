@@ -132,22 +132,6 @@ const guardarDonador = async (req, res) => {
   }
 };
 
-const mostrarDonadores = async (req, res) => {
-  try {
-    const donadores = await Donadores.findAll();
-    res.render('admin/verDonadores', {
-      pagina: 'Lista de Donadores',
-      donadores
-    });
-  } catch (error) {
-    console.error('Error fetching donors:', error);
-    res.status(500).render('admin/verDonadores', {
-      pagina: 'Lista de Donadores',
-      errores: [{ msg: 'Internal server error' }],
-      donadores: []
-    });
-  }
-};
 
 
 const eliminarDonador = async (req, res) => {
@@ -554,76 +538,6 @@ const generarExcel = async (req, res) => {
       res.status(500).send('Error al generar el Excel');
   }
 };
-
-/* const listarDonadores = async (req, res) => {
-  const page = parseInt(req.query.page) || 1; // Página actual, default: 1
-  const limit = 10; // Número de registros por página
-  const offset = (page - 1) * limit; // Offset para la consulta
-
-  try {
-      // Consulta a la base de datos para obtener los donadores paginados
-      const donadores = await Donadores.findAndCountAll({
-          offset,
-          limit,
-          order: [['createdAt', 'DESC']], // Ordenar según necesidad
-      });
-
-      const totalPages = Math.ceil(donadores.count / limit); // Total de páginas
-
-      res.render('admin/verDonadores', {
-          pagina: 'Listado de Donadores',
-          donadores: donadores.rows,
-          currentPage: page,
-          totalPages,
-      });
-  } catch (error) {
-      console.error('Error al obtener donadores:', error);
-      res.render('admin/verDonadores', {
-          pagina: 'Listado de Donadores',
-          errores: [{ msg: 'Error al obtener donadores.' }],
-      });
-  }
-}; 
-
-vista
-
-
-if donadores.length
-                table
-                    thead
-                        tr
-                            th.text-left Nombre
-                            th.text-left Correo Electrónico
-                            th.text-left Teléfono
-                            th.text-left Teléfono de Contacto
-                            th.text-left Empresa
-                            th.text-left Acciones
-                    tbody#donadores-table
-                        include _donadoresTable 
-            else
-                p.text-center No hay donadores registrados.
-
-            if totalPages > 1
-                ul.pagination.flex.justify-center.mt-5
-                    li.page-item(class=currentPage === 1 || totalPages === 0 ? 'hidden' : '')
-                        a.page-link(
-                            href=`/admin/donadores?page=${currentPage - 1}`, 
-                            class="bg-green-500 hover:bg-purple-700 text-black font-bold py-2 px-4 rounded-l transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110"
-                        ) Anterior
-
-                    - for(let i = 1; i <= totalPages; i++)
-                        li.page-item(class=i === currentPage ? 'active' : '')
-                            a.page-link(
-                                href=`/admin/donadores?page=${i}`, 
-                                class=`${i === currentPage ? 'bg-red-600 text-white' : 'bg-white-600 text-purple-600'} border border-purple-600 hover:bg-purple-700 hover:text-white font-bold py-2 px-4 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110`
-                            )= i
-
-                    li.page-item(class=currentPage === totalPages || totalPages === 0 ? 'hidden' : '')
-                        a.page-link(
-                            href=`/admin/donadores?page=${currentPage + 1}`, 
-                            class="bg-green-500 hover:bg-purple-700 text-black font-bold py-2 px-4 rounded-r transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110"
-                        ) Siguiente
-*/
 
 
 const listarDonadores = async (req, res) => {
