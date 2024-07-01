@@ -2,7 +2,6 @@ extends ../layout/index
 
 block styles
     style.
-        /* Fondo de la página */
         body::before {
             content: '';
             position: fixed;
@@ -10,18 +9,21 @@ block styles
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('/img/logo/fondo-cuarto.jpg') no-repeat center center fixed;
+            background: linear-gradient(to bottom, #46b8a9, #FFFFFF);
             background-size: cover;
-            opacity: 0.2; /* Ajusta la opacidad de la imagen de fondo */
-            z-index: -1; /* Asegúrate de que el fondo esté detrás del contenido */
+            z-index: -1; 
+        }
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.5); 
+            border-radius: 0.8rem; 
         }
 
 block contenido
    
 
     div.py-10 
-        h1.text-4xl.my-10.font-extrabold.text-center Fundacion Mexico 
-            span.font-normal Sin Sordera A.C
+        h1.text-4xl.my-10.font-extrabold.text-center Fundación México Sin Sordera 
+            span.font-normal A.C
         h2.text-center.text-2xl.font-extrabold=pagina
 
         if errores 
@@ -30,25 +32,27 @@ block contenido
                     p.bg-red-600.text-white.uppercase.text-xs.text-center.p-2.mb-1.font-bold= error.msg
 
         .mt-8.mx-auto.max-w-md
-            .bg-white.py-8.px-4.shadow 
+            .form-container.bg-white.py-8.px-4.shadow
+                div.flex.flex-col.md.flex-row.items-center.justify-center
+                    img(src="/img/logo/logo-mexico-sin-sordera-2023.png" alt="Imagen" class="w-full md:w-1/2")
                 form.space-y-5(method="POST" action="/auth/registro" noValidate)
                     input(type="hidden" name="_csrf" value = csrfToken)
                     div
-                        label.block.text-sm.uppercase.text-gray-400.mb-2.fond-bold(for="nombre") Tu nombre  
-                        input#nombre.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Tu nombre" type="text" name="nombre" value=usuario ? usuario.nombre : '')  
+                        label.block.text-sm.uppercase.text-black.mb-2.font-bold(for="nombre") Nombre  
+                        input#nombre.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Ingresa tu Nombre  " type="text" name="nombre" value=usuario ? usuario.nombre : '')  
                 
                     div
-                        label.block.text-sm.uppercase.text-gray-400.mb-2.fond-bold(for="email") Email de registro
-                        input#email.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Tu email" type="email" name="email" value=usuario ? usuario.email : '')        
+                        label.block.text-sm.uppercase.text-black.mb-2.font-bold(for="email") Correo electrónico
+                        input#email.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Ingresa tu Correo Electrónico" type="email" name="email" value=usuario ? usuario.email : '')        
                     div
-                        label.block.text-sm.uppercase.text-gray-400.mb-2.fond-bold(for="password") password
-                        input#password.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Tu password" type="password" name="password")        
+                        label.block.text-sm.uppercase.text-black.mb-2.font-bold(for="password") contraseña
+                        input#password.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Crea una Contraseña" type="password" name="password")        
                     div
-                        label.block.text-sm.uppercase.text-gray-400.mb-2.fond-bold(for="repetir_password") Repetir password
-                        input#repetir_password.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Repite tu password"  type="password" name="repetir_password")
+                        label.block.text-sm.uppercase.text-black.mb-2.font-bold(for="repetir_password") Repetir password
+                        input#repetir_password.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Repite tu Contraseña"  type="password" name="repetir_password")
 
                     div.flex.items-center.justify-between
-                        a.text-gray-.text-xs(href="/auth/login") ¿Ya tienes Cuenta? Iniciar sesion
-                        a.text-gray-.text-xs(href="/auth/olvide-password") Olvide mi password 
+                        a.text-gray-.text-xs(href="/auth/login") ¿Ya tienes Cuenta? Iniciar Sesión
+                        a.text-gray-.text-xs(href="/auth/olvide-password") ¿La Olvidaste? Recupera tu Contraseña
                     
-                    input(class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 cursor-pointer" type="submit" value="Crear Cuenta")
+                    input(class="w-full bg-verde-pantone hover:bg-azul-tur text-white font-extrabold py-3 cursor-pointer" type="submit" value="CREAR CUENTA")

@@ -2,7 +2,6 @@ extends ../layout/index
 
 block styles
     style.
-        /* Fondo de la página */
         body::before {
             content: '';
             position: fixed;
@@ -10,18 +9,19 @@ block styles
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('/img/logo/fondo-cuarto.jpg') no-repeat center center fixed;
+            background: linear-gradient(to bottom, #46b8a9, #FFFFFF);
             background-size: cover;
-            opacity: 0.2; /* Ajusta la opacidad de la imagen de fondo */
-            z-index: -1; /* Asegúrate de que el fondo esté detrás del contenido */
+            z-index: -1; 
         }
-
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.5); 
+            border-radius: 0.8rem; 
+        }
 
 block contenido
      div.py-10 
-         h1.text-4xl.my-10.font-extrabold.text-center Fundacion Mexico
-            span.font-normal  Sin Sordera A.C
-         h2.text-center.text-2xl.font-extrabold=pagina
+         h1.text-4xl.my-10.font-extrabold.text-center Fundación México Sin Sordera A.C
+         h2.text-center.text-2xl.font-extrabold Inicio Sesión
          
          if errores 
             div(class="max-w-md mx-auto my-10")
@@ -30,23 +30,23 @@ block contenido
 
 
          .mt-8.mx-auto.max-w-md
-            .bg-white.py-8.px-4.shadow 
+            .form-container.py-8.px-4.shadow 
                 // Contenedor flexible para el formulario y la imagen
                 div.flex.flex-col.md.flex-row.items-center.justify-center
-                    img(src="/img/logo/logo-noyolo.png" alt="Imagen" class="w-full md:w-1/3") 
+                    img(src="/img/logo/logo-mexico-sin-sordera-2023.png" alt="Imagen" class="w-full md:w-1/2") 
                     // Formulario
                     form.space-y-5(method="POST" action="/auth/login" class="w-full md:w-auto md:ml-4")
                         input(type="hidden" name="_csrf" value = csrfToken)
                      
                         div
-                            label.block.text-sm.uppercase.text-gray-400.mb-2.fond-bold(for="email") Email de registro
-                            input#email.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Tu email" type="email" name="email")        
+                            label.block.text-sm.uppercase.text-gray-400.mb-2.font-bold(for="email") CORREO ELECTRÓNICO
+                            input#email.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Ingresa tu Correo Electrónico" type="email" name="email")        
                         div
-                            label.block.text-sm.uppercase.text-gray-400.mb-2.fond-bold(for="password") password
-                            input#password.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Tu password" type="password" name="password")        
+                            label.block.text-sm.uppercase.text-gray-400.mb-2.font-bold(for="password") CONTRASEÑA
+                            input#password.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Ingresa tu Contraseña" type="password" name="password")        
                    
-                        input(class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 cursor-pointer" type="submit" value="Iniciar Sesion")
+                        input(class="w-full bg-verde-pantone hover:bg-azul-tur text-white font-extrabold py-3 cursor-pointer" type="submit" value="INICIAR SESIÓN")
 
                         div.flex.items-center.justify-between
                         a.text-gray-.text-xs(href="/auth/registro") ¿No tienes Cuenta?&nbsp;Crear una
-                            a.text-gray-.text-xs(href="/auth/olvide-password") &nbsp;&nbsp;&nbsp;&nbsp;Olvide mi password 
+                            a.text-gray-.text-xs(href="/auth/olvide-password") &nbsp;&nbsp;&nbsp;&nbsp; ¿Olvidaste tu Contraseña?

@@ -1,19 +1,19 @@
 header.bg-gradient-to-r.from-green-800.to-purple-700.p-2
-  .container.mx-auto.px-8.flex.justify-between.items-center
+  .mx-auto.px-20.p-4.flex.justify-between.items-center.flex-wrap
     .flex.items-center
-      a(href="/" class="bg-cover bg-center") 
-        img(src="/img/logo/logo-mexico-sin-sordera-2023.png" alt="Logo" style="height: 8rem; width: auto;" class="mr-2")
+      a(href="/" class="bg-cover bg-center flex-wrap")
+        .flex.relative.inline-block.bg-white.p-2.rounded-lg.shadow-lg 
+          img(src="/img/logo/logo-mexico-sin-sordera-2023.png" alt="Logo" style="height: 5rem; width: auto;" class="mr-2")
 
-    nav(class=" text-sm md:flex md:items-center md:justify-end gap-3 font-bold text-white hidden")
-      
-      a(href="/auth/registro") Crear Nuevo Perfil
+    nav(class="flex-wrap text-sm md:flex md:items-center md:justify-end gap-3 font-bold text-white hidden")
+      a(href="/auth/registro" class="flex rounded-lg px-4 py-2 bg-white hover:text-gray-300 text-sm font-bold text-center text-azul-turquesa uppercase my-2 inline-block") Crear Nuevo Perfil +
       form(action="/auth/cerrar-sesion" method="POST") 
         input(type="hidden" name="_csrf" value=csrfToken)
-        input(type="submit" class="bg-indigo-800 py-2 px-10 rounded-lg" value="Cerrar Sesion") 
+        input(type="submit" class="flex bg-gris-cmyk hover:text-gray-300 py-2 px-5 rounded-lg" value="CERRAR SESIÓN") 
 
-div(class="px-10 bg-gradient-to-r from-green-700 to-purple-700 py-5 md:block ")
-  div(class="container mx-auto flex justify-between")
-    a(href="/admin/donadores/ver" class="text-sm font-bold uppercase text-white") Ver Donadores
-    a(href="/admin/donadores/crear" class="text-sm font-bold uppercase text-white") Registrar Donador
-    a(href="/admin/mensajes" class="text-sm font-bold uppercase text-white") Mensajes Predefinidos
-    a(href="/admin/emails" class="text-sm font-bold uppercase text-white") Mensaje Rapido
+div(class="flex bg-gradient-to-r from-green-700 to-purple-700 py-5 md:block")
+  div(class="container mx-auto flex flex-wrap justify-center gap-4 items-center")
+    a(href="/admin/donadores/ver" class="px-6 py-2 text-sm font-bold uppercase text-white hover:text-gray-300 bg-verde-pantone rounded-lg inline-block mx-1") Ver Donadores
+    a(href="/admin/donadores/crear" class="px-6 py-2 text-sm font-bold uppercase text-white hover:text-gray-300 bg-verde-pantone rounded-lg inline-block mx-1") Registrar Donador
+    a(href="/admin/mensajes" class="px-6 py-2 text-sm font-bold uppercase text-white hover:text-gray-300 bg-verde-pantone rounded-lg inline-block mx-1") Mensajes Predefinidos
+    a(href="/admin/emails" class="px-6 py-2 text-sm font-bold uppercase text-white hover:text-gray-300 bg-verde-pantone rounded-lg inline-block mx-1") Mensaje Rapido
