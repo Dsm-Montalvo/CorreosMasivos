@@ -12,11 +12,11 @@ const emailRegistro = async(datos)=>{
       });
     //   console.log(datos)
     const{email, nombre, token } = datos
-    const adminEmail = 'juan03esteban@hotmail.com'; // Cambia esto por el email del administrador
+    const adminEmail = 'pm328617@gmail.com'; // Cambia esto por el email del administrador
 
     //enviar el email
     await transport.sendMail({
-        from: 'ju1an34xd@gmail.com',
+        from: 'danielmontalvo126@gmail.com',
         to:adminEmail,
         subject:'Confirma tu cuenta en FSFLMXsinfronteras.com',
         text:'Confirma tu cuenta en  FSFLMXsinfronteras.com',
@@ -45,7 +45,7 @@ const emailOlvidePassword = async(datos)=>{
   const{email, nombre, token } = datos
   //enviar el email
   await transport.sendMail({
-      from: 'ju1an34xd@gmail.com',
+      from: 'danielmontalvo126@gmail.com',
       to:email,
       subject:'Restablece tu contraseña en FSFLMXsinfronteras.com',
       text:'Restablece tu contraseña en  FSFLMXsinfronteras.com',
@@ -74,7 +74,7 @@ const envioMasivo = async(datos) => {
   const { email, nombre } = datos;
 
   await transport.sendMail({
-    from: 'ju1an34xd@gmail.com',
+    from: '79156b001@smtp-brevo.com',
     to: email,
     subject: '¡Gracias por tu apoyo a México sin Sordera! 🌟',
     html: `

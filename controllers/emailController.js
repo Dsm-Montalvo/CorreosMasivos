@@ -25,27 +25,27 @@ const sendEmails = async (req, res) => {
           });
     }
 
-    let transporter = nodemailer.createTransport({
+   /*  let transporter = nodemailer.createTransport({
       service: 'gmail', // o el servicio que estés usando
       auth: {
         user: process.env.EMAIL_USER2,
         pass: process.env.EMAIL_PASS2,
       },
-    });
+    }); */
 
-   /*  let transporter = nodemailer.createTransport({
+    let transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
         port: process.env.EMAIL_PORT,
-        secure: false, // true para usar SSL/TLS
         auth: {
           user: process.env.EMAIL_USER,
           pass: process.env.EMAIL_PASS
         }
-      }); */
+      }); 
 
     users.forEach(Donadores => {
       let mailOptions = {
-        from: `"${alias}" <${process.env.EMAIL_USER}>`,
+        /* from: `"${alias}" <${process.env.EMAIL_USER}>`, */
+        from: 'danielmontalvo126@gmail.com',
         to: Donadores.gmaildonador,
         subject: subject,
         text: message,
@@ -407,16 +407,17 @@ const enviarEmail = async (req, res) => {
     }
 
     let transporter = nodemailer.createTransport({
-      service: 'gmail', // o el servicio que estés usando
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
       auth: {
-        user: process.env.EMAIL_USER2,
-        pass: process.env.EMAIL_PASS2,
-      },
-    });
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    }); 
 
     donadores.forEach(donador => {
       let mailOptions = {
-        from: `"${alias}" <${process.env.EMAIL_USER}>`, // Use the alias from req.body
+        from: 'danielmontalvo126@gmail.com', // Use the alias from req.body
         to: donador.gmaildonador,
         subject: mensaje.asunto,
         text: mensaje.mensaje,

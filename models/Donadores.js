@@ -24,7 +24,7 @@ const Donadores = db.define('donadores',{
     },
     montodonado:{
         type:DataTypes.STRING,
-        allowNull:false
+        allowNull:true
     }
     
 })

@@ -20,7 +20,6 @@ router.post('/admin/donadores/crear', protegerRuta,
     body('telefono').notEmpty().withMessage('El Teléfono es obligatorio'),
     body('telcontacto').notEmpty().withMessage('El Teléfono de Contacto es obligatorio'),
     body('empresa').notEmpty().withMessage('La Empresa es obligatoria'),
-    body('montodonado').notEmpty().withMessage('El Monto Donado es obligatorio'),
     guardarDonador
 );
 
