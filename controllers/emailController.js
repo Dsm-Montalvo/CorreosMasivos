@@ -674,7 +674,7 @@ const downloadPdf = async (req, res) => {
 
       doc.fontSize(12).text(`Nombre: ${historial.nombreMensaje}`);
       doc.text(`Asunto: ${historial.asunto}`);
-      doc.text(`Alias: ${historial.alias}`);
+      doc.text(`Mensaje: ${historial.mensaje}`);
       doc.text(`Usuario: ${historial.usuario}`);
       doc.text(`Fecha de Envío: ${fechaEnvioFecha} ${fechaEnvioHora}`);
       doc.text('----------------------------------------');
@@ -699,7 +699,7 @@ const downloadExcel = async (req, res) => {
     worksheet.columns = [
       { header: 'Nombre del Mensaje', key: 'nombreMensaje', width: 30 },
       { header: 'Asunto', key: 'asunto', width: 30 },
-      { header: 'Alias', key: 'alias', width: 20 },
+      { header: 'Mensaje', key: 'mensaje', width: 20 },
       { header: 'Usuario', key: 'usuario', width: 20 },
       { header: 'Fecha de Envío', key: 'fechaEnvio', width: 30 },
     ];
@@ -711,7 +711,7 @@ const downloadExcel = async (req, res) => {
       worksheet.addRow({
         nombreMensaje: historial.nombreMensaje,
         asunto: historial.asunto,
-        alias: historial.alias,
+        mensaje: historial.mensaje,
         usuario: historial.usuario,
         fechaEnvio: `${fechaEnvioFecha} ${fechaEnvioHora}`
       });
