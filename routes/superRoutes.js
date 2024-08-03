@@ -2,7 +2,7 @@ import express from 'express'
 import {body} from 'express-validator'
 import protegerRuta from '../middleware/protegerRuta.js';
 import upload from '../middleware/subirImagen.js';
-import { sendEmails, crearCorreo, crearDonador, guardarDonador, editarDonador,actualizarDonador, eliminarDonador, verMensajesPredefinidos, crearMensajePredefinido, guardarMensajePredefinido, editarMensajePredefinido, guardarCambiosMensajePredefinido, eliminarMensajePredefinido, utilizarMensajePredefinido, enviarEmail, noEncontrado, superUsuario, generarPDF, generarExcel, listarDonadores } from '../controllers/emailController.js';
+import { sendEmails, crearCorreo, crearDonador, guardarDonador, editarDonador,actualizarDonador, eliminarDonador, verMensajesPredefinidos, crearMensajePredefinido, guardarMensajePredefinido, editarMensajePredefinido, guardarCambiosMensajePredefinido, eliminarMensajePredefinido, utilizarMensajePredefinido, enviarEmail, noEncontrado, superUsuario, generarPDF, generarExcel, listarDonadores, verHistorial, downloadPdf, downloadExcel } from '../controllers/emailController.js';
 
 const router = express.Router();
 
@@ -45,6 +45,10 @@ router.post('/admin/emails/enviar',protegerRuta, enviarEmail);
 router.get('/admin/donadores/pdf',protegerRuta, generarPDF);
 router.get('/admin/donadores/excel',protegerRuta ,generarExcel);
 router.get('/admin/donadores',protegerRuta ,listarDonadores);
+
+router.get('/admin/historial', protegerRuta, verHistorial);
+router.get('/admin/historial/pdf', protegerRuta, downloadPdf);
+router.get('/admin/historial/excel', protegerRuta, downloadExcel);
 
 router.get('/404',noEncontrado)
 

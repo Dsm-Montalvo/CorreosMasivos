@@ -1,0 +1,31 @@
+if historiales.length
+    table
+        thead
+            tr
+                th.text-center Nombre del Mensaje
+                th.text-center Asunto
+                th.text-center Mensaje
+                th.text-center Usuario
+                th.text-center Fecha de Envío
+                th.text-center Hora de Envío
+        tbody
+            each historial in historiales
+                tr
+                    td.text-center= historial.nombreMensaje
+                    td.text-center= historial.asunto
+                    td.text-center= historial.mensaje.length > 30 ? historial.mensaje.substring(0, 30) + '...' : historial.mensaje
+                    td.text-center= historial.usuario
+                    td.text-center= historial.fechaEnvio.toLocaleDateString('es-MX')
+                    td.text-center= historial.fechaEnvio.toLocaleTimeString('es-MX')
+else
+    p.text-center No hay mensajes registrados.
+
+if totalPages > 1
+    ul.pagination
+        li.page-item(class=currentPage === 1 ? 'disabled' : '')
+            a.page-link(href=`#`, onclick=`changePage(${currentPage - 1})`) Anterior
+        - for(let i = 1; i <= totalPages; i++)
+            li.page-item(class=i === currentPage ? 'active' : '')
+                a.page-link(href=`#`, onclick=`changePage(${i})`) #{i}
+        li.page-item(class=currentPage === totalPages ? 'disabled' : '')
+            a.page-link(href=`#`, onclick=`changePage(${currentPage + 1})`) Siguiente

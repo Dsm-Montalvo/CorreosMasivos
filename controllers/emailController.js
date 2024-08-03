@@ -8,75 +8,79 @@ import PDFDocument from 'pdfkit';
 import ExcelJS from 'exceljs';
 import { Op } from 'sequelize';
 import MensajesPredefinidos from '../models/MensajePredefinidos.js';
+import HistorialMensajes from '../models/HistorialMensajes.js';
+
 
 const sendEmails = async (req, res) => {
   const { subject, message, alias } = req.body;
+  const usuarioname = req.usuario.nombre; // Suponiendo que el ID del usuario está disponible en req.user
 
   try {
     const users = await Donadores.findAll();
 
     if (!users.length) {
-        return res.status(404).render('admin/emailForm', {
-            pagina: 'Enviar Correos Masivos',
-            csrfToken: req.csrfToken(),
-            datos: req.body,
-            errores: [{ msg: 'No hay usuario en la Base de datos' }],
-            mensajes: []
-          });
+      return res.status(404).render('admin/emailForm', {
+        pagina: 'Enviar Correos Masivos',
+        csrfToken: req.csrfToken(),
+        datos: req.body,
+        errores: [{ msg: 'No hay usuario en la Base de datos' }],
+        mensajes: []
+      });
     }
 
-   /*  let transporter = nodemailer.createTransport({
-      service: 'gmail', // o el servicio que estés usando
-      auth: {
-        user: process.env.EMAIL_USER2,
-        pass: process.env.EMAIL_PASS2,
-      },
-    }); */
-
     let transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: process.env.EMAIL_PORT,
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS
-        }
-      }); 
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
 
-    users.forEach(Donadores => {
+    users.forEach(donador => {
       let mailOptions = {
-        /* from: `"${alias}" <${process.env.EMAIL_USER}>`, */
-        from: 'danielmontalvo126@gmail.com',
-        to: Donadores.gmaildonador,
+        from: 'fundacionmexicosinsordera.mail@gmail.com',
+        to: donador.gmaildonador,
         subject: subject,
         text: message,
       };
 
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          console.log(`Error sending to ${Donadores.gmaildonador}: ${error}`);
+          console.log(`Error sending to ${donador.gmaildonador}: ${error}`);
         } else {
-          console.log(`Email sent to ${Donadores.gmaildonador}: ${info.response}`);
+          console.log(`Email sent to ${donador.gmaildonador}: ${info.response}`);
         }
       });
     });
 
+    // Guardar en el historial
+    await HistorialMensajes.create({
+      nombreMensaje: alias,
+      asunto: subject,
+      alias: alias,
+      usuario: usuarioname,
+      mensaje: message,
+      fechaEnvio: new Date() // Usa la fecha actual
+    });
+
     res.render('admin/super', {
-        pagina: 'Inicio',
-        csrfToken: req.csrfToken(),
-        datos: {},
-        errores: [],
-        mensajes: [{ msg: 'Emails enviados Correctamente' }]
-      });
-    } catch (error) {
-      console.error('Error fetching users:', error);
-      res.status(500).render('admin/super', {
-        pagina: 'Inicio',
-        csrfToken: req.csrfToken(),
-        datos: req.body,
-        errores: [{ msg: 'Internal server error' }],
-        mensajes: []        
-      });
-    }
+      pagina: 'Inicio',
+      csrfToken: req.csrfToken(),
+      datos: {},
+      errores: [],
+      mensajes: [{ msg: 'Emails enviados Correctamente' }]
+    });
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).render('admin/super', {
+      pagina: 'Inicio',
+      csrfToken: req.csrfToken(),
+      datos: req.body,
+      errores: [{ msg: 'Internal server error' }],
+      mensajes: []
+    });
+  }
 };
 
 const crearCorreo = async(req,res) =>{
@@ -384,6 +388,8 @@ const utilizarMensajePredefinido = async (req, res) => {
 const enviarEmail = async (req, res) => {
   try {
     const { mensajeId, alias } = req.body;
+    const usuarioname = req.usuario.nombre; // Suponiendo que el ID del usuario está disponible en req.user
+
     const mensaje = await MensajesPredefinidos.findByPk(mensajeId);
 
     if (!mensaje) {
@@ -413,11 +419,11 @@ const enviarEmail = async (req, res) => {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
       }
-    }); 
+    });
 
     donadores.forEach(donador => {
       let mailOptions = {
-        from: 'danielmontalvo126@gmail.com', // Use the alias from req.body
+        from: 'fundacionmexicosinsordera.mail@gmail.com',
         to: donador.gmaildonador,
         subject: mensaje.asunto,
         text: mensaje.mensaje,
@@ -432,6 +438,16 @@ const enviarEmail = async (req, res) => {
       });
     });
 
+    // Guardar en el historial
+    await HistorialMensajes.create({
+      nombreMensaje: mensaje.alias,
+      asunto: mensaje.asunto,
+      alias: mensaje.alias,
+      usuario: usuarioname,
+      mensaje: mensaje.mensaje,
+      fechaEnvio: new Date() // Usa la fecha actual
+    });
+
     res.render('admin/super', {
       pagina: 'Inicio',
       csrfToken: req.csrfToken(),
@@ -439,16 +455,16 @@ const enviarEmail = async (req, res) => {
       errores: [],
       mensajes: [{ msg: 'Emails enviados Correctamente' }]
     });
-    } catch (error) {
+  } catch (error) {
     console.error('Error fetching users:', error);
     res.status(500).render('admin/super', {
       pagina: 'Inicio',
       csrfToken: req.csrfToken(),
       datos: req.body,
       errores: [{ msg: 'Internal server error' }],
-      mensajes: []        
+      mensajes: []
     });
-    }
+  }
 };
 
 
@@ -589,6 +605,130 @@ const listarDonadores = async (req, res) => {
   }
 };
 
+const verHistorial = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limite = 10;
+    const offset = (page - 1) * limite;
+    const searchQuery = req.query.search || '';
+
+    const { count, rows } = await HistorialMensajes.findAndCountAll({
+      where: {
+        nombreMensaje: {
+          [Op.like]: `%${searchQuery}%`
+        }
+      },
+      limit: limite,
+      offset: offset,
+      order: [['fechaEnvio', 'DESC']]
+    });
+
+    const totalPages = Math.ceil(count / limite);
+
+    if (req.xhr) {
+      res.render('admin/historialTable', {
+        historiales: rows,
+        csrfToken: req.csrfToken(),
+        currentPage: page,
+        totalPages,
+        layout: false
+      });
+    } else {
+      res.render('admin/verHistorial', {
+        pagina: 'Historial de Mensajes',
+        csrfToken: req.csrfToken(),
+        historiales: rows,
+        currentPage: page,
+        totalPages
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching historial:', error);
+    res.status(500).render('admin/super', {
+      pagina: 'Inicio',
+      csrfToken: req.csrfToken(),
+      datos: req.body,
+      errores: [{ msg: 'Internal server error' }],
+      mensajes: []
+    });
+  }
+};
+
+// Descargar PDF
+const downloadPdf = async (req, res) => {
+  try {
+    const historiales = await HistorialMensajes.findAll(); // Obtén todos los historiales
+
+    const doc = new PDFDocument();
+    res.setHeader('Content-disposition', 'attachment; filename=historial-mensajes.pdf');
+    res.setHeader('Content-type', 'application/pdf');
+
+    doc.pipe(res);
+
+    doc.fontSize(16).text('Historial de Mensajes', { align: 'center' });
+    doc.moveDown();
+
+    historiales.forEach(historial => {
+      const fechaEnvioFecha = new Date(historial.fechaEnvio).toLocaleDateString('es-MX');
+      const fechaEnvioHora = new Date(historial.fechaEnvio).toLocaleTimeString('es-MX');
+
+      doc.fontSize(12).text(`Nombre: ${historial.nombreMensaje}`);
+      doc.text(`Asunto: ${historial.asunto}`);
+      doc.text(`Alias: ${historial.alias}`);
+      doc.text(`Usuario: ${historial.usuario}`);
+      doc.text(`Fecha de Envío: ${fechaEnvioFecha} ${fechaEnvioHora}`);
+      doc.text('----------------------------------------');
+      doc.moveDown();
+    });
+
+    doc.end();
+  } catch (error) {
+    console.error('Error al generar el PDF:', error);
+    res.status(500).send('Error al generar el PDF');
+  }
+};
+
+// Descargar Excel
+const downloadExcel = async (req, res) => {
+  try {
+    const historiales = await HistorialMensajes.findAll(); // Obtén todos los historiales
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Historial de Mensajes');
+
+    worksheet.columns = [
+      { header: 'Nombre del Mensaje', key: 'nombreMensaje', width: 30 },
+      { header: 'Asunto', key: 'asunto', width: 30 },
+      { header: 'Alias', key: 'alias', width: 20 },
+      { header: 'Usuario', key: 'usuario', width: 20 },
+      { header: 'Fecha de Envío', key: 'fechaEnvio', width: 30 },
+    ];
+
+    historiales.forEach(historial => {
+      const fechaEnvioFecha = new Date(historial.fechaEnvio).toLocaleDateString('es-MX');
+      const fechaEnvioHora = new Date(historial.fechaEnvio).toLocaleTimeString('es-MX');
+
+      worksheet.addRow({
+        nombreMensaje: historial.nombreMensaje,
+        asunto: historial.asunto,
+        alias: historial.alias,
+        usuario: historial.usuario,
+        fechaEnvio: `${fechaEnvioFecha} ${fechaEnvioHora}`
+      });
+    });
+
+    res.setHeader('Content-disposition', 'attachment; filename=historial-mensajes.xlsx');
+    res.setHeader('Content-type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+    await workbook.xlsx.write(res);
+    res.end();
+  } catch (error) {
+    console.error('Error al generar el Excel:', error);
+    res.status(500).send('Error al generar el Excel');
+  }
+};
+
+
 export{
     crearCorreo,
     sendEmails,
@@ -609,5 +749,8 @@ export{
     superUsuario,
     generarPDF,
     generarExcel,
-    listarDonadores
+    listarDonadores,
+    verHistorial,
+    downloadPdf,
+    downloadExcel
 }

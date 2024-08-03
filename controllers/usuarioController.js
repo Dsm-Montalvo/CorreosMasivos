@@ -191,7 +191,7 @@ const confirmar = async (req,res)=>{
 
     if(!usuario){
         return res.render('auth/confirmar-cuenta',{
-            pagina:'Erro al confirmar tu cuenta ',
+            pagina:'Error al confirmar tu cuenta ',
             mensaje:'Hubo un error al confirmar tu cuenta'
           
         })
