@@ -668,21 +668,19 @@ const downloadPdf = async (req, res) => {
     doc.fontSize(16).text('Historial de Mensajes', { align: 'center' });
     doc.moveDown();
 
-    // Define el margen izquierdo para el mensaje
     const marginLeft = 50; // Ajusta el valor según tus necesidades
 
     historiales.forEach(historial => {
       const fechaEnvioFecha = new Date(historial.fechaEnvio).toLocaleDateString('es-MX');
       const fechaEnvioHora = new Date(historial.fechaEnvio).toLocaleTimeString('es-MX');
 
-      // Configura el margen izquierdo para el campo "Mensaje"
+      // Usa un formato limpio para el mensaje
+      const mensaje = historial.mensaje.replace(/(\r\n|\n|\r)/g, '\n'); // Normaliza saltos de línea
+
       doc.fontSize(12).text(`Nombre: ${historial.nombreMensaje}`);
       doc.text(`Asunto: ${historial.asunto}`);
-      doc.text(`Mensaje:`, { continued: true, align: 'left' });
-
-      // Ajusta la posición para aplicar el margen izquierdo solo al campo "Mensaje"
-      const previousX = doc.x; // Guarda la posición x actual
-      doc.text(historial.mensaje, { align: 'left', continued: false, indent: marginLeft }); // Aplica el margen izquierdo
+      doc.text(`Mensaje:`);
+      doc.text(mensaje, { align: 'left', indent: marginLeft });
 
       doc.text(`Usuario: ${historial.usuario}`);
       doc.text(`Fecha de Envío: ${fechaEnvioFecha} ${fechaEnvioHora}`);
