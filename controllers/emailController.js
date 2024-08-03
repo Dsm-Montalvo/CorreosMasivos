@@ -668,13 +668,22 @@ const downloadPdf = async (req, res) => {
     doc.fontSize(16).text('Historial de Mensajes', { align: 'center' });
     doc.moveDown();
 
+    // Define el margen izquierdo para el mensaje
+    const marginLeft = 50; // Ajusta el valor según tus necesidades
+
     historiales.forEach(historial => {
       const fechaEnvioFecha = new Date(historial.fechaEnvio).toLocaleDateString('es-MX');
       const fechaEnvioHora = new Date(historial.fechaEnvio).toLocaleTimeString('es-MX');
 
+      // Configura el margen izquierdo para el campo "Mensaje"
       doc.fontSize(12).text(`Nombre: ${historial.nombreMensaje}`);
       doc.text(`Asunto: ${historial.asunto}`);
-      doc.text(`Mensaje: ${historial.mensaje}`);
+      doc.text(`Mensaje:`, { continued: true, align: 'left' });
+
+      // Ajusta la posición para aplicar el margen izquierdo solo al campo "Mensaje"
+      const previousX = doc.x; // Guarda la posición x actual
+      doc.text(historial.mensaje, { align: 'left', continued: false, indent: marginLeft }); // Aplica el margen izquierdo
+
       doc.text(`Usuario: ${historial.usuario}`);
       doc.text(`Fecha de Envío: ${fechaEnvioFecha} ${fechaEnvioHora}`);
       doc.text('----------------------------------------');
@@ -699,7 +708,7 @@ const downloadExcel = async (req, res) => {
     worksheet.columns = [
       { header: 'Nombre del Mensaje', key: 'nombreMensaje', width: 30 },
       { header: 'Asunto', key: 'asunto', width: 30 },
-      { header: 'Mensaje', key: 'mensaje', width: 20 },
+      { header: 'Mensaje', key: 'mensaje', width: 100 },
       { header: 'Usuario', key: 'usuario', width: 20 },
       { header: 'Fecha de Envío', key: 'fechaEnvio', width: 30 },
     ];
